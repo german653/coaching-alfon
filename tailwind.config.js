@@ -7,17 +7,30 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        // Define tus colores personalizados aquí
-        'logo-orange': '#FFB03B', // Este es un ejemplo, ajusta al amarillo/naranja exacto de tu logo
-        'logo-dark': '#4A2A2A',   // Un marrón oscuro que podría derivar del logo
-        'accent-pink': '#EC4899', // Si quieres mantener un rosa sutil
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        display: ['Playfair Display', 'serif'],
       },
-      // Puedes también definir una fuente personalizada si lo deseas
-      // fontFamily: {
-      //   sans: ['Inter', 'sans-serif'], // Ejemplo con fuente Inter de Google Fonts
-      // },
+      colors: {
+        'brand-orange': '#f97316',
+        'brand-amber': '#f59e0b',
+        'brand-dark': '#1c1917',
+        'brand-warm': '#292524',
+      },
+      boxShadow: {
+        'glow-orange': '0 0 40px rgba(249, 115, 22, 0.3)',
+        'card': '0 4px 24px rgba(0,0,0,0.08)',
+        'card-hover': '0 20px 60px rgba(0,0,0,0.15)',
+      },
+      backgroundImage: {
+        'hero-pattern': "linear-gradient(135deg, #1c1917 0%, #292524 60%, #1c1917 100%)",
+        'orange-gradient': "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.8s ease-out',
+        'slide-up': 'slideUp 0.6s ease-out',
+      },
     },
   },
   plugins: [],
-}
+}

@@ -1,67 +1,89 @@
 // src/components/Header.jsx
 
+import { useState, useEffect } from 'react';
 import { Bars3Icon } from '@heroicons/react/24/solid';
-import MobileMenu from './MobileMenu'; // Asegúrate de que este archivo existe
+import MobileMenu from './MobileMenu';
 
-// Elementos de navegación
 const navItems = [
   { name: 'Inicio', href: '#inicio' },
   { name: 'Sobre Mí', href: '#sobre-mi' },
   { name: 'Servicios', href: '#servicios' },
+  { name: 'Contacto', href: '#contacto' },
 ];
 
-/**
- * Componente del Header (Encabezado de la Página)
- * @param {object} props
- * @param {boolean} props.isMenuOpen - Estado actual del menú móvil.
- * @param {function} props.setIsMenuOpen - Función para cambiar el estado del menú móvil.
- */
-function Header({ isMenuOpen, setIsMenuOpen }) { 
+function Header({ isMenuOpen, setIsMenuOpen }) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    // z-40 para estar debajo del menú móvil
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm shadow-md">
+    <header
+      className={`sticky top-0 z-40 transition-all duration-500 ${
+        scrolled
+          ? 'bg-stone-950/95 backdrop-blur-md shadow-lg shadow-black/20'
+          : 'bg-transparent'
+      }`}
+      style={scrolled ? { borderBottom: '1px solid rgba(249,115,22,0.15)' } : {}}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-start md:justify-between items-center h-20"> 
-          
-          {/* Logo del Coach */}
-          <a href="#inicio" className="flex items-center">
-            <img 
-              src="/logo-coach.jpg" // Asegúrate de tener esta imagen en la carpeta /public
-              alt="Logo del Coach" 
-              className="h-12 w-auto rounded-full shadow-sm"
-            />
+        <div className="flex justify-between items-center h-20">
+
+          {/* Logo */}
+          <a href="#inicio" className="flex items-center gap-3 group">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 blur transition-all duration-300"
+                style={{ background: 'rgba(249,115,22,0.4)' }} />
+              <img
+                src="/logo-coach.jpg"
+                alt="Logo del Coach"
+                className="h-12 w-12 rounded-full object-cover shadow-md relative z-10 transition-transform duration-300 group-hover:scale-110"
+              />
+            </div>
+            <span className="hidden sm:block font-bold text-white text-lg tracking-tight">
+              Alfonso Coach
+            </span>
           </a>
-          
-          {/* Enlaces de Navegación (Desktop) */}
-          <nav className="hidden md:flex space-x-8 ml-10"> 
+
+          {/* Nav Desktop */}
+          <nav className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-orange-500 font-medium transition duration-300 relative group"
+                className="relative px-4 py-2 text-stone-300 hover:text-white font-medium transition-colors duration-300 rounded-lg hover:bg-white/5 group"
               >
                 {item.name}
-                <span className="absolute left-0 bottom-0 h-0.5 bg-orange-500 w-0 group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-0 group-hover:w-4/5 transition-all duration-300 rounded-full"
+                  style={{ background: '#f97316' }} />
               </a>
             ))}
+            <a
+              href="#contacto"
+              className="ml-4 font-semibold py-2 px-5 rounded-lg text-gray-900 transition-all duration-300 hover:scale-105"
+              style={{ background: 'linear-gradient(135deg, #f97316, #ea580c)' }}
+            >
+              Sesión Gratuita
+            </a>
           </nav>
 
-          {/* Botón Menú Móvil (Hamburguesa) */}
-          <button 
-            className="md:hidden ml-auto p-2 text-gray-600 hover:text-orange-500"
-            onClick={() => setIsMenuOpen(true)} // Abre el menú
+          {/* Hamburguesa */}
+          <button
+            className="md:hidden p-2 text-stone-300 hover:text-orange-400 transition-colors"
+            onClick={() => setIsMenuOpen(true)}
             aria-label="Abrir menú de navegación"
           >
-            {/* Ícono de 3 barras completas de Heroicons */}
-            <Bars3Icon className="h-7 w-7" /> 
+            <Bars3Icon className="h-7 w-7" />
           </button>
         </div>
       </div>
-      
-      {/* Componente del Menú Móvil (Modal de Pantalla Completa) */}
-      <MobileMenu 
-        isOpen={isMenuOpen} 
-        onClose={() => setIsMenuOpen(false)} 
+
+      <MobileMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
         navItems={navItems}
       />
     </header>
